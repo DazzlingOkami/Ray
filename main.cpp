@@ -1,3 +1,12 @@
+/* 
+ * To build and run:
+ *  	$ g++ .\main.cpp -o ray -O1
+ *  	$ .\ray
+ * 
+ * Press control-C to exit.
+ * 
+ */
+
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -5,6 +14,7 @@
 #include <cstring>
 //#include <unistd.h>
 #include "functions.h"
+#include <stdlib.h>
 #define PI 3.14159265358979323846
 using namespace std;
 
@@ -28,6 +38,9 @@ void gotoxy ( short x, short y )
 }
 char palette[]=" .:;~=#OB8%&";
 
+#ifndef _WIN32
+#define Sleep(ms) usleep(1000 * ms)
+#endif
 
 typedef struct Ball{
 	double center[3];	
@@ -175,14 +188,16 @@ int main()
 
 	double alfa=0,beta=PI/2, r=1.9;
 	
+	setvbuf(stdout, (char*)calloc((HEIGHT/dH) * (WIDTH/dW + 1), sizeof(char)), _IOFBF, (HEIGHT/dH) * (WIDTH/dW + 1));
 	
 	//starting screen
 	for(int i=0;i<HEIGHT/dH;i++){
 	for(int j=0;j<WIDTH/dW;j++){
-		printf("@");
+		putchar('@');
 	}
-	printf("\n");
+	putchar('\n');
 	}
+	fflush(stdout);
 	getchar();
 	gotoxy(0,0);
 	
@@ -225,10 +240,12 @@ int main()
 		//display:
 		for(int i=0;i<HEIGHT/dH;i++){
 		for(int j=0;j<WIDTH/dW;j++){
-			printf("%c",platno[i][j]);
+			putchar(platno[i][j]);
 		}
-		printf("\n");
+		putchar('\n');
 		}
+		fflush(stdout);
+		Sleep(80);
 		
 		//instead of system("cls") i used this because it looks smoother
 		gotoxy(0,0);
