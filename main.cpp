@@ -251,7 +251,13 @@ int main()
 		gotoxy(0,0);
 		//update camera position
 		alfa+=0.03*PI;
-		if(beta>PI/20)beta-=0.03*PI;
+		static float beta_dir = -0.01f;
+		if(beta > PI/2 - 0.2){
+			beta_dir = -0.01f;
+		}else if(beta < PI/20){
+			beta_dir = 0.01f;
+		}
+		beta += PI * beta_dir;
 	}
 	return 0;
 }
